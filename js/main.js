@@ -8,6 +8,10 @@ function saveBookmark(e){
 	var siteName = document.querySelector('#siteName').value;
 	var siteUrl = document.querySelector('#siteUrl').value;
 
+	if(!validateForm(siteName, siteUrl)){
+		return false;
+	}
+
 
 	var bookmark = {
 		name: siteName,
@@ -37,6 +41,10 @@ if(localStorage.getItem('bookmarks') === null){
 	localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
 
 }
+
+	document.querySelector('#myForm').reset();
+
+	fetchBookmarks();
 
 	e.preventDefault();
 }
@@ -79,6 +87,24 @@ function fetchBookmarks(){
 
 	}
 
+}
+
+function validateForm(siteName, siteUrl){
+	if(!siteName || !siteUrl){
+		alert('Please fill in the form');
+		return false;
+	}
+
+	var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	var regex = new RegExp(expression);
+
+	if(!siteUrl.match(regex)){
+		alert("Please enter a valid URL");
+		return false;
+	}
+
+
+		return true;
 }
 
 
